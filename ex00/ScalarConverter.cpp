@@ -37,136 +37,87 @@ ScalarConverter	&ScalarConverter::operator=(ScalarConverter const &converter)
 	return *this;
 }
 
-bool ScalarConverter::isChar(std::string convert){
-	if (isprint(std::stoi(convert)))
-	{
-		std::cout << "true !\n";
-		return true;
+bool ScalarConverter::isPrintableChar(const std::string& str) {
+
+	if (str.length() == 1)
+		return (isprint(str[0]));
+	if (isNumber(str)) {
+		double d = stringToDouble(str);
+		if (d >= 0 && d <= 127)
+			return true;
+		else
+			return false;
 	}
 	return false;
 }
 
-bool ScalarConverter::isInt(std::string convert){
-	try{
-		std::stoi(convert);
-	}
-	catch (const std::exception &e){
-		return false;
-	}
-	return true;
-}
-
-bool ScalarConverter::isFloat(std::string convert){
-	try{
-		std::stof(convert);
-	}
-	catch (const std::exception &e){
-		return false;
-	}
-	return true;
-}
-
-bool ScalarConverter::isDouble(std::string convert){
-	try{
-		std::stod(convert);
-	}
-	catch (const std::exception &e){
-		return false;
-	}
-	return true;
-}
-
-int ScalarConverter::convertType(std::string convert){
-	if (isChar(convert))
-	{
-		std::cout << "hit !\n";
-		return 1;
-	}
-	if (isInt(convert))
-		return 2;
-	if (isFloat(convert))
-		return 3;
-	if (isDouble(convert))
-		return 4;
-	return 0;
-}
-
-void ScalarConverter::printChar(std::string convert, int type){
-	if (type == 1) {
-		try {
-			std::cout << "char: " << static_cast<char>(std::stoi(convert)) << std::endl;
-		}
-		catch (const std::invalid_argument &e) {
-			std::cerr << convert[0] << std::endl;
+bool ScalarConverter::isNumber(const std::string& str) {
+	int length = str.length();
+	for (std::size_t i = 0; i < length; ++i) {
+		if (!isdigit(str[i])) {
+			if (i == 0 && str[i] == '-')
+				continue;
+			else
+				return false;
 		}
 	}
-	try {
-		if (type == 2)
-			std::cout << "char: "<< "impossible"<< std::endl;
-		if (type == 3)
-			std::cout << "char: "<< "impossible" << std::endl;
-		if (type == 4)
-			std::cout << "char: "<< "impossible"<< std::endl;
-	}
-	catch (const std::exception &e){
-		std::cerr << "char: impossible" << std::endl;
-	}
+	return true;  // All characters are digits
 }
 
-void ScalarConverter::printInt(std::string convert, int type){
-	if (type == 2)
-		std::cout << "int: "<< std::stoi(convert) << std::endl;
-	try {
-		if (type == 1)
-			std::cout << "int: "<< static_cast<int>(convert[0])<< std::endl;
-		if (type == 3)
-			std::cout << "int: "<< static_cast<int>(std::stof(convert))<< std::endl;
-		if (type == 4)
-			std::cout << "int: "<< static_cast<int>(std::stod(convert))<< std::endl;
+bool ScalarConverter::isChar(const std::string& str) {
+	if (str.empty())
+		return false;
+	if (isPrintableChar(str))
+		return true;
+	std::istringstream iss(str);
+	char result;
+	iss >> result;
+	if (iss.fail()) {
+		return false;
 	}
-	catch (const std::exception &e){
-		std::cerr << "int: impossible" << std::endl;
-	}
+	return true;
 }
 
-void ScalarConverter::printFloat(std::string convert, int type){
-	if (type == 3)
-		std::cout << "float: "<< std::stof(convert) << std::endl;
-	try {
-		if (type == 1)
-			std::cout << "float: "<< static_cast<float>(convert[0])<< std::endl;
-		if (type == 2)
-			std::cout << "float: "<< static_cast<float>(std::stoi(convert))<< std::endl;
-		if (type == 4)
-			std::cout << "float: "<< static_cast<float>(std::stod(convert))<< std::endl;
+bool ScalarConverter::isInt(const std::string& str) {
+	if (isPrintableChar(str))
+		return true;
+	std::istringstream iss(str);
+	int result;
+	iss >> result;
+	if (iss.fail()) {
+		return false;
 	}
-	catch (const std::exception &e){
-		std::cerr << "float: impossible" << std::endl;
-	}
+	return true;
 }
 
-void ScalarConverter::printDouble(std::string convert, int type){
-	if (type == 4)
-		std::cout << "double: "<< std::stod(convert) << std::endl;
-	try {
-		if (type == 1)
-			std::cout << "double: "<< static_cast<double>(convert[0])<< std::endl;
-		if (type == 2)
-			std::cout << "double: "<< static_cast<double>(std::stoi(convert))<< std::endl;
-		if (type == 3)
-			std::cout << "double: "<< static_cast<double>(std::stof(convert))<< std::endl;
+bool ScalarConverter::isDouble(const std::string& str) {
+	if (isPrintableChar(str))
+		return true;
+	std::istringstream iss(str);
+	double result;
+	iss >> result;
+	if (iss.fail()) {
+		return false;
 	}
-	catch (const std::exception &e){
-		std::cerr << "double: impossible" << std::endl;
-	}
+	return true;
 }
 
-void ScalarConverter::convert(const std::string input) {
-	int type = convertType(input);
-	printChar(input, type);
-	printInt(input, type);
-	printFloat(input, type);
-	printDouble(input, type);
+bool ScalarConverter::isFloat(const std::string& str) {
+	if (isPrintableChar(str))
+		return true;
+	std::istringstream iss(str);
+	float result;
+	iss >> result;
+	if (iss.fail()) {
+		return false;
+	}
+	return true;
 }
+
+
+
+
+
+
 
 
