@@ -95,23 +95,6 @@ bool ScalarConverter::isInt(const std::string& str) {
 	return true;
 }
 
-bool ScalarConverter::isFloat(const std::string& str) {
-
-	if (!str.empty() && str[str.length() - 1] == 'f') {
-		// If 'f' is at the end, remove it and proceed as if it's a regular float
-		std::string withoutF = str.substr(0, str.length() - 1);
-		std::istringstream iss(withoutF);
-		float result;
-		iss >> result;
-		return true;
-	}
-	std::istringstream iss(str);
-	float result;
-	iss >> result;
-	return true;
-}
-
-
 double ScalarConverter::stringToDouble(const std::string& str) {
 	char* endptr;
 	double result = strtod(str.c_str(), &endptr);
@@ -204,7 +187,10 @@ void ScalarConverter::printDouble(const std::string convert) {
 
 void ScalarConverter::convertTypes(const std::string convert) {
 	if (isValidInput(convert) == false) {
-		std::cout << "Error: Invalid input. Your input should be a single character or a valid number" << std::endl;
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int: impossible" << std::endl;
+		std::cout << "float: nanf" << std::endl;
+		std::cout << "double: nan" << std::endl;
 		return;
 	}
 	printChar(convert);

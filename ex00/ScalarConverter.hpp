@@ -20,11 +20,6 @@ class ScalarConverter
 {
 private:
 
-	static char	_c;
-	static int		_i;
-	static float	_f;
-	static double	_d;
-
 	static void printChar(std::string convert);
 	static void printInt(std::string convert);
 	static void printFloat(std::string convert);
@@ -42,8 +37,6 @@ private:
 	static bool isPrintableChar(const std::string& str);
 	static bool isNumber(const std::string& str);
 	static bool isInt(const std::string& str);
-	static bool isFloat(const std::string& str);
-	static bool isDouble(const std::string& str);
 
 
 
